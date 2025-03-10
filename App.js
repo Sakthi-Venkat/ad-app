@@ -6,13 +6,13 @@ import SignupPage from "./src/Screen/SignupPage";
 import Login from "./src/Screen/Login";
 import HomePage from "./src/Screen/HomePage";
 import Dashboard from "./src/Screen/Dashboard";
-import LeaveApproval from "./src/Screen/LeaveApproval";
 import ForgotPassword from "./src/Screen/ForgotPassword";
+import profile from "./src/Screen/Profile";
+import HodAnnoucements from "./src/Screen/HodAnnoucements";
 
 
 
 
-// Stack Navigator for Main Screens
 const Stack = createStackNavigator();
 
 
@@ -23,8 +23,10 @@ function MainStackNavigator() {
       <Stack.Screen name="Signup" component={SignupPage} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="LeaveApproval" component={LeaveApproval} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="Profile" component={profile} />
+      <Stack.Screen name="HodAnnoucements" component={HodAnnoucements} />
+     
     </Stack.Navigator>
   );
 }

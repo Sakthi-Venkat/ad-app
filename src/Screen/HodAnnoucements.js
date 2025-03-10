@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
-import axios from "axios";
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Dimensions 
+} from "react-native";
 import Toast from "react-native-toast-message";
 
 const { width, height } = Dimensions.get("window"); // Get screen dimensions
-
-const apiUrl = "YOUR_API_URL"; // Replace with your API URL
 
 const AnnouncementCreation = () => {
   const [formData, setFormData] = useState({ title: "", content: "" });
@@ -14,23 +18,9 @@ const AnnouncementCreation = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async () => {
-    try {
-      const token = "YOUR_AUTH_TOKEN"; // Replace with token retrieval logic
-      const res = await axios.post(`${apiUrl}/api/announcementsadmin`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (res.data.success) {
-        Toast.show({ type: "success", text1: "Announcement created successfully" });
-        setFormData({ title: "", content: "" });
-      } else {
-        Toast.show({ type: "error", text1: res.data.message || "Failed to create announcement" });
-      }
-    } catch (err) {
-      console.error("Error creating announcement:", err);
-      Toast.show({ type: "error", text1: err.response?.data?.message || err.message });
-    }
+  const handleSubmit = () => {
+    Toast.show({ type: "success", text1: "Announcement created successfully (Mock Action)" });
+    setFormData({ title: "", content: "" });
   };
 
   return (

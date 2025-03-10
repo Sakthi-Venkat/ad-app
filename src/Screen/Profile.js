@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { 
   View, 
   Text, 
@@ -6,20 +6,12 @@ import {
   TouchableOpacity, 
   Image, 
   StyleSheet, 
-  Alert, 
-  ScrollView,
-  ActivityIndicator
+  ScrollView 
 } from "react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-
-const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 const Profile = () => {
   const navigation = useNavigation();
-  const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
     roles: "",
@@ -29,82 +21,14 @@ const Profile = () => {
     Year: "",
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = await AsyncStorage.getItem("token");
-        if (!token) {
-          Alert.alert("Error", "No authentication token found. Please log in.");
-          setLoading(false);
-          return;
-        }
-
-        const res = await axios.get(`${apiUrl}/api/profile`, {
-          headers: { Authorization: `Bearer ${token}`, client: "not browser" },
-          withCredentials: true,
-        });
-
-        if (res.data.success && res.data.data) {
-          setUser(res.data.data);
-          setFormData({
-            email: res.data.data.email || "",
-            roles: Array.isArray(res.data.data.roles)
-              ? res.data.data.roles.join(", ")
-              : res.data.data.roles || "",
-            department: res.data.data.department || "",
-            classRoom: res.data.data.classRoom || "",
-            rollNo: String(res.data.data.rollNo) || "",
-            Year: res.data.data.Year || "I",
-          });
-        } else {
-          Alert.alert("Error", res.data?.message || "User data not found");
-        }
-      } catch (error) {
-        console.log("Fetch Error:", error);
-        Alert.alert("Error", error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   const handleChange = (key, value) => {
     setFormData({ ...formData, [key]: value });
   };
 
-  const handleSubmit = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      const res = await axios.patch(
-       `${apiUrl}/api/updateprofile/${formData.rollNo}`,
-        formData,
-        {
-          headers: { Authorization: `Bearer ${token}`, client: "not browser" },
-          withCredentials: true,
-        }
-      );
-
-      if (res.data.success) {
-        Alert.alert("Success", "Profile updated successfully");
-        navigation.navigate("Dashboard");
-      } else {
-        Alert.alert("Error", res.data.message || "Failed to update profile");
-      }
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Error", "Profile update failed");
-    }
+  const handleSubmit = () => {
+    alert("Profile updated successfully (Mock Action)");
+    navigation.navigate("Dashboard");
   };
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#6b5b95" />
-      </View>
-    );
-  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -230,10 +154,5 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: "contain",
     marginTop: 30,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
