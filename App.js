@@ -7,6 +7,7 @@ import Login from "./src/Screen/Login";
 import HomePage from "./src/Screen/HomePage";
 import Dashboard from "./src/Screen/Dashboard";
 import LeaveApproval from "./src/Screen/LeaveApproval";
+import ForgotPassword from "./src/Screen/ForgotPassword";
 
 
 
@@ -23,6 +24,7 @@ function MainStackNavigator() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="LeaveApproval" component={LeaveApproval} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     </Stack.Navigator>
   );
 }

@@ -54,6 +54,8 @@ const Login = () => {
         value={formData.password}
         onChangeText={(text) => setFormData({ ...formData, password: text })}
       />
+      <Text style={styles.Forgot}>ForgotPassword</Text>
+     
       <Picker
         selectedValue={formData.roles}
         style={[styles.picker, { fontSize: wp > 400 ? 16 : 14 }]}
@@ -62,7 +64,8 @@ const Login = () => {
         <Picker.Item label="Staff" value="staff" />
         <Picker.Item label="HOD" value="hod" />
       </Picker>
-      <Button title="Login" onPress={()=> navigation.navigate('LeaveApproval')} color="#4C51BF" />
+      
+      <Button title="Login" onPress={()=> navigation.navigate('Dashboard')} color="#4C51BF"  style={styles.button}/>
       <Text style={styles.signupText}>
         Don't have an account? <Text style={styles.signupLink} onPress={() => navigation.navigate('Signup')}>Signup</Text>
       </Text>
@@ -100,17 +103,26 @@ const styles = StyleSheet.create({
     marginBottom: hp * 0.02,
     backgroundColor: '#F9FAFB',
   },
+  Forgot:{
+     color:'#4C51BF',
+     justifyContent:'flex-end',
+     alignSelf:'flex-end',
+  },
   picker: {
     width: '100%',
     height: 50,
     marginBottom: hp * 0.02,
   },
+  
   signupText: {
     marginTop: hp * 0.02,
   },
   signupLink: {
     color: '#4C51BF',
     textDecorationLine: 'underline',
+  },
+  button:{
+    
   },
 });
 
