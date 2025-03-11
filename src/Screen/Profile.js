@@ -11,14 +11,15 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 const Profile = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // No need for fallback
+
   const [formData, setFormData] = useState({
     email: "",
     roles: "",
     department: "",
     classRoom: "",
     rollNo: "",
-    Year: "",
+    year: "", // Changed 'Year' to 'year'
   });
 
   const handleChange = (key, value) => {
@@ -73,11 +74,20 @@ const Profile = () => {
         </View>
 
         <View style={styles.inputContainer}>
+          <Text style={styles.label}>Roll No:</Text>
+          <TextInput
+            style={styles.input}
+            value={formData.rollNo}
+            onChangeText={(text) => handleChange("rollNo", text)}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
           <Text style={styles.label}>Year:</Text>
           <TextInput
             style={styles.input}
-            value={formData.Year}
-            onChangeText={(text) => handleChange("Year", text)}
+            value={formData.year}
+            onChangeText={(text) => handleChange("year", text)}
           />
         </View>
 

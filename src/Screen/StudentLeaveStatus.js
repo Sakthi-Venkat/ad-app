@@ -10,7 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { MaterialIcons } from "@expo/vector-icons"; // Icons
-import { apiUrl } from "@env"; // Get API URL from environment
+
 
 const StudentLeaveStatus = () => {
   const [requests, setRequests] = useState([]);

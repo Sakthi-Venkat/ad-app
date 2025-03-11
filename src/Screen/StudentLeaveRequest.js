@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import DocumentPicker from "react-native-document-picker";
 import DatePicker from "react-native-date-picker";
 import { showMessage } from "react-native-flash-message";
@@ -12,14 +19,13 @@ const StudentLeaveRequest = () => {
     startDate: new Date(),
     endDate: new Date(),
   });
+
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [openStartDate, setOpenStartDate] = useState(false);
   const [openEndDate, setOpenEndDate] = useState(false);
 
-  const apiUrl = "YOUR_BACKEND_URL";  // Replace with your actual API URL
-
-  // Handle File Selection
+  // Handle File Selection with Alert on Cancel
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.pickSingle({
@@ -27,7 +33,12 @@ const StudentLeaveRequest = () => {
       });
       setFile(result);
     } catch (err) {
-      console.log("File selection canceled:", err);
+      if (DocumentPicker.isCancel(err)) {
+        Alert.alert("Cancelled", "You did not select any file.");
+      } else {
+        Alert.alert("Error", "Something went wrong while selecting the file.");
+        console.log("File selection error:", err);
+      }
     }
   };
 
@@ -39,52 +50,25 @@ const StudentLeaveRequest = () => {
     }
 
     setLoading(true);
-    const token = "YOUR_AUTH_TOKEN"; // Replace with stored authentication token
-
-    const formSubmitData = new FormData();
-    formSubmitData.append("type", formData.type);
-    formSubmitData.append("reason", formData.reason);
-    formSubmitData.append("rollNo", formData.rollNo);
-    formSubmitData.append("startDate", formData.startDate.toISOString());
-    formSubmitData.append("endDate", formData.endDate.toISOString());
-
-    if (file) {
-      formSubmitData.append("file", {
-        uri: file.uri,
-        name: file.name,
-        type: file.type,
+    setTimeout(() => {
+      showMessage({ message: "Leave request submitted!", type: "success" });
+      setFormData({
+        type: "Leave",
+        reason: "",
+        rollNo: "",
+        startDate: new Date(),
+        endDate: new Date(),
       });
-    }
-
-    try {
-      const response = await fetch(`${apiUrl}/api/leaveRequest`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-        body: formSubmitData,
-      });
-
-      const resData = await response.json();
-      if (resData.success) {
-        showMessage({ message: "Leave request submitted!", type: "success" });
-        setFormData({ type: "Leave", reason: "", rollNo: "", startDate: new Date(), endDate: new Date() });
-        setFile(null);
-      } else {
-        showMessage({ message: resData.message || "Submission failed", type: "danger" });
-      }
-    } catch (error) {
-      console.error("Error submitting request:", error);
-      showMessage({ message: "Error submitting request", type: "danger" });
-    } finally {
+      setFile(null);
       setLoading(false);
-    }
+    }, 2000);
   };
 
   return (
     <View style={{ flex: 1, padding: 20, backgroundColor: "#F3E8FF" }}>
-      <Text style={{ fontSize: 22, fontWeight: "bold", textAlign: "center", marginBottom: 20 }}>Leave/OD Request</Text>
+      <Text style={{ fontSize: 22, fontWeight: "bold", textAlign: "center", marginBottom: 20 }}>
+        Leave/OD Request
+      </Text>
 
       {/* Roll No Input */}
       <TextInput
@@ -148,7 +132,7 @@ const StudentLeaveRequest = () => {
 
       {/* File Upload */}
       <TouchableOpacity onPress={pickDocument} style={[styles.input, { backgroundColor: "#E0E0E0" }]}>
-        <Text>{`file ? Selected: ${file.name} : "Attach Supporting Document"`}</Text>
+        <Text>{file ? `Selected: ${file.name}` : "Attach Supporting Document"}</Text>
       </TouchableOpacity>
 
       {/* Submit Button */}
